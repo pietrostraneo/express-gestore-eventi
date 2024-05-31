@@ -105,6 +105,21 @@ class Event {
         fs.writeFileSync(filePath, data);
         return 'Evento aggiunto';
     }
+
+    static getEvents(id) {
+
+        let file = this.readFile('events')
+
+        if (!id) {
+            return file;
+        }
+
+        let filteredEvent = file.find(e => e.id === Number(id));
+
+        return filteredEvent;
+
+
+    }
 }
 
 // Export the Event model class
