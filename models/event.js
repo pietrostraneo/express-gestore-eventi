@@ -120,6 +120,12 @@ class Event {
 
 
     }
+
+    static getReserverdEvents(eventId) {
+        let reservations = this.readFile('reservations');
+        let filteredReservations = reservations.filter(r => r.eventId === Number(eventId));
+        return filteredReservations;
+    }
 }
 
 // Export the Event model class
