@@ -1,5 +1,6 @@
 const Event = require('../models/event.js');
 const Reservation = require('../models/reservation.js');
+// const utils = require('../utils.js');
 const path = require('path');
 const fs = require('fs');
 
@@ -22,6 +23,7 @@ const store = (req, res) => {
     const { eventId } = req.params;
     const { firstName, lastName, email } = req.query;
 
+
     if (firstName.trim() === '' || lastName.trim() === '' || email.trim() === '') {
         res.status(400).json({ message: 'Please provide a first name, last name and an email' });
     }
@@ -35,6 +37,7 @@ const store = (req, res) => {
     }
 
     const reservations = Event.readFile('reservations');
+    const events = Event.readFile('events');
 
     const exists = reservations.find(r => r.firstName === firstName && r.lastName === lastName);
 
@@ -42,11 +45,15 @@ const store = (req, res) => {
         res.status(400).json({ message: 'Reservation already exists' });
     }
 
+
+
     const maxId = reservations.reduce((max, reservation) => {
         return reservation.id > max ? reservation.id : max;
     }, 0);
 
     let id = maxId + 1;
+
+    // utils.checkDate(eventId);
 
     const reserve = new Reservation(Number(id), firstName, lastName, email, Number(eventId));
 
@@ -84,7 +91,7 @@ const destroy = (req, res) => {
             json: () => {
                 res.status(404).json({
                     status: 404,
-                    error: 'Post not found'
+                    error: 'Reservation not found'
                 })
             },
             html: () => {
