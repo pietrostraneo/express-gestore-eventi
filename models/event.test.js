@@ -36,5 +36,5 @@ test('il metodo read dovrebbe ritornare un object', () => {
 
 test('il metodo write dovrebbe aggiungere un evento', () => {
     const event = new Event(1, "Matrimonio", "description", "20/05/2024", 20);
-    expect(Event.writeFile('events', event)).toBe('Evento aggiunto');
+    expect(Event.writeFile('events', [...events, event.toJSON()])).toBe('Evento aggiunto');
 })
