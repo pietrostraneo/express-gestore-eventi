@@ -66,7 +66,34 @@ const store = (req, res) => {
 
 };
 
-const update = () => {
+const update = (req, res) => {
+
+    const { title, description, date, maxSeats } = req.query;
+    const { eventId } = req.params;
+
+    if (!eventId) {
+        throw new Error(`Event with id:${eventId} does not exist`);
+    }
+
+    events[Number(eventId) - 1] = {
+        id: Number(eventId),
+        title: title,
+        description: description,
+        date: date,
+        maxSeats: Number(maxSeats)
+    }
+
+    Event.writeFile('events', events);
+
+    res.format({
+        json: () => {
+            res.json({
+                message: 'Event updated successfully',
+                data: events[Number(eventId) - 1]
+            })
+        }
+    })
+
 
 };
 
