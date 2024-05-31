@@ -61,6 +61,17 @@ class Reservation {
         this.#eventId = value;
     }
 
+
+    toJSON() {
+        return {
+            id: this.#id,
+            firstName: this.#firstName,
+            lastName: this.#lastName,
+            email: this.#email,
+            eventId: this.#eventId
+        };
+    }
+
 }
 
 module.exports = Reservation;
