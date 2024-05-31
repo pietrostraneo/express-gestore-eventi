@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "dev": "nodemon app.js",
-    "test": "jest"
+    "test": "jest",
+    "log": "nodemon models/event.js"
   },
   "keywords": [],
   "author": "",

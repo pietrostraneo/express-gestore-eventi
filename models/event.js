@@ -1,3 +1,8 @@
+const fs = require('fs');
+const path = require('path');
+const { cwd } = require('process');
+
+
 // Event model class
 class Event {
     // Private properties
@@ -76,7 +81,23 @@ class Event {
     set maxSeats(value) {
         this.#maxSeats = value;
     }
+
+    static readFile(filename) {
+        let filePath = path.join(process.cwd(), 'db', filename + '.json')
+        let data = fs.readFileSync(filePath, 'utf-8');
+        return JSON.parse(data);
+    }
+
+    static writeFile(filename, newEvent) {
+        let filePath = path.join(process.cwd(), 'db', filename + '.json')
+        let data = JSON.stringify(newEvent);
+        fs.writeFileSync(filePath, data);
+        return 'Evento aggiunto';
+    }
 }
 
+const event = new Event(1, "Matrimonio", "description", "20/05/2024", 20);
+
+console.log(event);
 // Export the Event model class
 module.exports = Event;
