@@ -1,5 +1,7 @@
 const Event = require('../models/event.js');
 const Reservation = require('../models/reservation.js');
+const path = require('path');
+const fs = require('fs');
 
 const index = (req, res) => {
     const { eventId } = req.params;
@@ -67,6 +69,44 @@ const store = (req, res) => {
 
 const destroy = (req, res) => {
 
+    let reservations = Event.readFile('reservations');
+
+    const updateReservations = (newReservation) => {
+        const filePath = path.join(__dirname, '../db/reservations.json');
+        fs.writeFileSync(filePath, JSON.stringify(newReservation));
+        reservations = newReservation;
+    };
+
+    const { eventId, reservationId } = req.params;
+    const reservationToDelete = reservations.find(r => r.id === Number(reservationId));
+    if (!reservationToDelete) {
+        res.format({
+            json: () => {
+                res.status(404).json({
+                    status: 404,
+                    error: 'Post not found'
+                })
+            },
+            html: () => {
+                res.status(404).send('Post not found');
+            }
+        })
+    }
+
+    if (Number(eventId) === reservationToDelete.eventId && Number(reservationId) === reservationToDelete.id) {
+        const newReservations = reservations.filter(r => r.id !== Number(reservationId));
+        updateReservations(newReservations);
+
+        res.format({
+            json: () => {
+                res.status(200).json({
+                    status: 200,
+                    message: 'Reservation deleted successfully'
+                })
+            }
+
+        })
+    }
 };
 
 

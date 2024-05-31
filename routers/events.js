@@ -9,6 +9,6 @@ router.put('/:eventId', eventsCtrl.update);
 
 router.get('/:eventId/reservations', resCtrl.index);
 router.post('/:eventId/reservations', resCtrl.store);
-router.delete('/:eventId/reservations/:reservation', resCtrl.destroy);
+router.delete('/:eventId/reservations/:reservationId', resCtrl.destroy);
 
 module.exports = router;
